@@ -15,17 +15,17 @@ ENV AWSCLIURL           'https://s3.amazonaws.com/aws-cli/awscli-bundle.zip'
 ENV JQURL               'https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64'
 ENV RVMRUBYVERSION      '2.3'
 
+# Install a set of base packages
+RUN yum -y update
+RUN yum -y install epel-release
+RUN yum -y install which git vim mlocate curl sudo unzip file python-devel python-pip python34 python34-devel wget bind-utils
+
 
 # Setup the user account for use and give it sudo root
 RUN useradd -m -u ${ACCOUNTUID} ${ACCOUNTNAME}
 RUN chown ${ACCOUNTNAME}:${ACCOUNTNAME} /home/${ACCOUNTNAME}/
 RUN echo '%wheel    ALL=(ALL)    NOPASSWD:ALL' > /etc/sudoers.d/wheel
 RUN chmod 0440 /etc/sudoers.d/wheel
-
-# Install a set of base packages
-RUN yum -y update
-RUN yum -y install epel-release
-RUN yum -y install which git vim mlocate curl sudo unzip file python-devel python-pip python34 python34-devel wget bind-utils
 
 # Install RVM and a copy of Ruby
 RUN gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
