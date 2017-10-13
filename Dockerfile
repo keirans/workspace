@@ -82,6 +82,6 @@ RUN chmod 755 /usr/local/bin/jq
 
 WORKDIR /
 
-CMD ["su" ," -" , ${ACCOUNTNAME} ]
+CMD [ "su" ," -" , "${ACCOUNTNAME}" ]
 
 
