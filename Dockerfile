@@ -23,9 +23,10 @@ RUN yum -y install which git vim mlocate curl sudo unzip file python-devel pytho
 
 # Setup the user account for use and give it sudo root
 RUN useradd -m -u ${ACCOUNTUID} ${ACCOUNTNAME}
-RUN chown ${ACCOUNTNAME}:${ACCOUNTNAME} /home/${ACCOUNTNAME}/
 RUN echo '%wheel    ALL=(ALL)    NOPASSWD:ALL' > /etc/sudoers.d/wheel
 RUN chmod 0440 /etc/sudoers.d/wheel
+ADD shell/$ACCOUNTNAME}/.bash_profile /home/keiran/.bash_profile
+RUN chown -R ${ACCOUNTNAME}:${ACCOUNTNAME} /home/${ACCOUNTNAME}/
 
 # Install RVM and a copy of Ruby
 RUN gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
@@ -56,6 +57,9 @@ RUN /opt/puppetlabs/puppet/bin/gem install hocon --version='~>1.1.2' --no-ri --n
 # Install the latest Puppet Development Kit (PDK)
 RUN yum --nogpgcheck install -y ${PUPPETDEVKITURL}
 
+# Install Puppet Bolt into the Puppet Ruby install (Until it ships with PE)
+RUN /opt/puppetlabs/puppet/bin/gem install bolt
+
 # Install the Azure CLI
 WORKDIR /var/tmp/
 RUN curl -O https://bootstrap.pypa.io/get-pip.py
@@ -63,6 +67,12 @@ RUN /usr/bin/python3 get-pip.py
 RUN /usr/bin/pip3 install azure-cli
 RUN rm -f /bin/python
 RUN ln -s /bin/python3 /bin/python
+
+# Install Powerline and configure
+RUN pip install powerline-status
+ADD shell/powerline/config.json  /usr/lib/python3.4/site-packages/powerline/config_files/config.json
+ADD shell/powerline/default_leftonly.json /usr/lib/python3.4/site-packages/powerline/config_files/themes/shell/default_leftonly.json
+
 
 # Install JQ
 WORKDIR /usr/local/bin/
