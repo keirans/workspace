@@ -25,7 +25,7 @@ RUN yum -y install which git vim mlocate curl sudo unzip file python-devel pytho
 RUN useradd -m -u ${ACCOUNTUID} ${ACCOUNTNAME}
 RUN echo '%wheel    ALL=(ALL)    NOPASSWD:ALL' > /etc/sudoers.d/wheel
 RUN chmod 0440 /etc/sudoers.d/wheel
-ADD shell/$ACCOUNTNAME}/.bash_profile /home/keiran/.bash_profile
+ADD shell/${ACCOUNTNAME}/.bash_profile /home/${ACCOUNTNAME}/.bash_profile
 RUN chown -R ${ACCOUNTNAME}:${ACCOUNTNAME} /home/${ACCOUNTNAME}/
 
 # Install RVM and a copy of Ruby
