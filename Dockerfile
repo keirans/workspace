@@ -83,6 +83,6 @@ RUN chmod 755 /usr/local/bin/jq
 WORKDIR /
 
 # Variable interpolation is an issue with CMD currently. Hardcoding.
-CMD [ "su" ," -" , "keiran" ]
+CMD [ "su  - keiran" ]
 
 
